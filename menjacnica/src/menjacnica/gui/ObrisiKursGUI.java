@@ -17,6 +17,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JCheckBox;
 
 import menjacnica.Valuta;
+import menjacnica.gui.kontroler.GUIKontroler;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -37,7 +38,7 @@ public class ObrisiKursGUI extends JFrame {
 	private JLabel lblSkraceniNaziv;
 	private JTextField textFieldSrednjiKurs;
 	private JTextField textFieldSkraceniNaziv;
-	private JButton btnDodaj;
+	private JButton btnObrisi;
 	private JButton btnOdus;
 	private JCheckBox chckbxZaistaObrisiKurs;
 	private JLabel label;
@@ -48,7 +49,7 @@ public class ObrisiKursGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ObrisiKursGUI(MenjacnicaGUI glavniProzor, Valuta valuta) {
+	public ObrisiKursGUI(Valuta valuta) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ObrisiKursGUI.class.getResource("/icons/Screenshot.png")));
 		setResizable(false);
 		setTitle("Obrisi kurs");
@@ -72,7 +73,7 @@ public class ObrisiKursGUI extends JFrame {
 		contentPane.add(getTextFieldSkraceniNaziv());
 		contentPane.add(getChckbxZaistaObrisiKurs());
 		contentPane.add(getLabel());
-		contentPane.add(getBtnDodaj());
+		contentPane.add(getBtnObrisi());
 		contentPane.add(getBtnOdus());
 		
 		//podesavanje
@@ -172,17 +173,19 @@ public class ObrisiKursGUI extends JFrame {
 		}
 		return textFieldSkraceniNaziv;
 	}
-	private JButton getBtnDodaj() {
-		if (btnDodaj == null) {
-			btnDodaj = new JButton("Obrisi");
-			btnDodaj.addActionListener(new ActionListener() {
+	private JButton getBtnObrisi() {
+		if (btnObrisi == null) {
+			btnObrisi = new JButton("Obrisi");
+			btnObrisi.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					obrisiValutu();
+					GUIKontroler.obrisiValutu(valuta);
+					
+					dispose();
 				}
 			});
-			btnDodaj.setEnabled(false);
+			btnObrisi.setEnabled(false);
 		}
-		return btnDodaj;
+		return btnObrisi;
 	}
 	private JButton getBtnOdus() {
 		if (btnOdus == null) {
@@ -201,9 +204,9 @@ public class ObrisiKursGUI extends JFrame {
 			chckbxZaistaObrisiKurs.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (chckbxZaistaObrisiKurs.isSelected())
-						btnDodaj.setEnabled(true);
+						btnObrisi.setEnabled(true);
 					else
-						btnDodaj.setEnabled(false);
+						btnObrisi.setEnabled(false);
 				}
 			});
 		}
@@ -226,15 +229,5 @@ public class ObrisiKursGUI extends JFrame {
 		textFieldSrednjiKurs.setText(""+valuta.getSrednji());				
 	}
 
-	private void obrisiValutu() {
-		try{
-			glavniProzor.sistem.obrisiValutu(valuta);
-			
-			glavniProzor.prikaziSveValute();
-			dispose();
-		} catch (Exception e1) {
-			JOptionPane.showMessageDialog(contentPane, e1.getMessage(),
-					"Greska", JOptionPane.ERROR_MESSAGE);
-		}
-	}
+	
 }

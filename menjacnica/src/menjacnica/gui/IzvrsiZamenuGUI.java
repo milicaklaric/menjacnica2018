@@ -27,6 +27,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.ButtonGroup;
 
 import menjacnica.Valuta;
+import menjacnica.gui.kontroler.GUIKontroler;
+
 import java.awt.Toolkit;
 
 public class IzvrsiZamenuGUI extends JFrame {
@@ -56,7 +58,7 @@ public class IzvrsiZamenuGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public IzvrsiZamenuGUI(MenjacnicaGUI glavniProzor, Valuta valuta) {
+	public IzvrsiZamenuGUI(Valuta valuta) {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(IzvrsiZamenuGUI.class.getResource("/icons/Screenshot.png")));
 		setTitle("Izvrsi zamenu");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -164,7 +166,11 @@ public class IzvrsiZamenuGUI extends JFrame {
 			btnIzvrsiZamenu = new JButton("Izracunaj iznos");
 			btnIzvrsiZamenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					izvrsiZamenu();
+					String s = GUIKontroler.izvrsiZamenu(valuta,
+							rdbtnProdaja.isSelected(), 
+							Double.parseDouble(textFieldIznos.getText()));
+					
+					textFieldKonacniIznos.setText(s);
 				}
 			});
 			btnIzvrsiZamenu.setBounds(24, 234, 160, 25);
@@ -239,17 +245,5 @@ public class IzvrsiZamenuGUI extends JFrame {
 		textFieldValuta.setText(valuta.getSkraceniNaziv());
 	}
 	
-	private void izvrsiZamenu(){
-		try{
-			double konacniIznos = 
-					glavniProzor.sistem.izvrsiTransakciju(valuta,
-							rdbtnProdaja.isSelected(), 
-							Double.parseDouble(textFieldIznos.getText()));
-		
-			textFieldKonacniIznos.setText(""+konacniIznos);
-		} catch (Exception e1) {
-		JOptionPane.showMessageDialog(contentPane, e1.getMessage(),
-				"Greska", JOptionPane.ERROR_MESSAGE);
-	}
-	}
+
 }
