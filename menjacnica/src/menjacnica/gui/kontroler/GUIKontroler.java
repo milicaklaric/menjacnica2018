@@ -48,6 +48,8 @@ public class GUIKontroler {
 
 				menjacnica.sacuvajUFajl(file.getAbsolutePath());
 			}
+			
+			
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(mgp, e1.getMessage(),
 					"Greska", JOptionPane.ERROR_MESSAGE);
